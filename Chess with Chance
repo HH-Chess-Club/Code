@@ -1,0 +1,96 @@
+# IMPORTS
+import random
+import tkinter as tk
+
+# LIST OF ALL CARDS AND STUFF
+
+c1 = "Gus game. (Any one of your pawns can take backwards for this turn)"
+c2 = "And then he sacrificed... THE ROOOOOKK! (You take one of your opponents rooks of your choice)"
+c3 = "All of your pawns slide left one square. (If your pawn leaves the board it gets taken out. If your pawn movement would cause a check don't move it. If pawn movement causes a capture take it. If pawn movement causes a king capture the pawn dies.)"
+c4 = "Any of your rooks goes to 7th or 2nd rank depending on color (if there is no open space do nothing)"
+c5 = "Forced castle. You castle taking the pieces on the horizontal. If the king or both rooks have been moved do nothing"
+c6 = "Get out of jail for free. (You can revive one of your dead pieces)"
+c7 = "Promotion. (one of your pawns on the starting square becomes a queen)"
+c8 = "Premove. (Your next move must be within 1 second of your opponent playing)"
+c9 = "Your bishop gets jailed for.... (One of your Bishops of your choice gets taken out)"
+c10 = "Gotta be inclusive: Gay Chess. (All the queens on the board becomes a king. To win other player have to take one king and checkmate the other)"
+c11 = "Hunters came and killed your horse (Any one of your knights of your choice dies)"
+c12 = "Your horse broke a leg. (Any one of your knights becomes a pawn)"
+c13 = "Your king became the Rizzler (You get a queen (must be placed in the first rank))"
+c14 = "Your king gets a new wife (If you don't have a queen you can get one and place it on its starting square, If the starting square is occupied the piece on that square gets taken out)"
+c15 = "Any of your rooks goes on the back rank (if there is no open space do nothing)"
+c16 = "The bomb has been planted (C4 square explodes in a 1 square radius after your next move)"
+c17 = "Its evolving, just backwards. (Uncastle if possible)"
+c18 = "Your pawn converts to Christianity (any of your pawns that your opponent selects becomes a bishop)"
+c19 = "Coinflip to see if the game is a draw. Heads = Draw, Tails = Continue game (type 'coinflip' for a digital coinflip)"
+c20 = "Your king had a heart attack (First your queen becomes a king, If you don't have a queen then a knight becomes a king. If you don't have a queen or a knight you lose.)"
+c21 = "All of your pawns slide right one square. (If your pawn leaves the board it gets taken out. If your pawn movement would cause a check don't move it. If pawn movement causes a capture take it. If pawn movement causes a king capture the pawn dies.)"
+c22 = "ChatGPT game (You and your opponent switch sides)"
+c23 = "If legal, your King and your Queen swaps locations"
+c24 = "Gamemode switches to atomic chess for the next 2 moves (1 each)"
+
+List = [c1,c2,c2,c3,c3,c4,c4,c5,c5,c6,c7,c7,c8,c8,c9,c9,c10,c10,c11,c11,c12,c12,c13,c13,c14,c14,c15,c15,c16,c16,
+        c17,c17,c18,c18,c19,c20,c21,c21,c22,c23,c23,c24,c24]
+
+def reset_deck():
+    return List.copy()
+
+deck = reset_deck()
+
+# Function to draw a card and update the GUI
+def draw_card():
+    global deck
+    if deck:
+        randItem = random.choice(deck)
+        deck.remove(randItem)
+        card_label.config(text=randItem)
+        coinflip_label.config(text="")  # Clear coinflip result label
+    else:
+        card_label.config(text="No cards left in the deck. Refilling the deck...")
+        deck = reset_deck()  # Refill the deck
+
+# Function to perform a coinflip and update the GUI
+def coinflip():
+    result = "Heads" if random.randint(0, 1) == 0 else "Tails"
+    coinflip_label.config(text=f"Coinflip result: {result}")
+
+# Create the main GUI window
+root = tk.Tk()
+root.title("Chess with Chance")
+
+# FULLSCREENS
+width = root.winfo_screenwidth()
+height = root.winfo_screenheight()
+root.attributes("-fullscreen", True)
+root.lift()  # Brings the window to the top
+root.focus_force()  # Forces focus onto the window
+
+
+# rot
+root.configure(bg="black")
+# root destroy?
+def close_application(event):
+    root.destroy()
+
+# Bind the "Escape" key to close the application
+root.bind("<Escape>", close_application)
+
+# Create a label to display the drawn card
+font = ("Helvetica", 28)
+card_label = tk.Label(root, text="", wraplength=1000, font=font, bg="black", fg="white")
+card_label.pack(pady=20)
+
+# Create a button to draw a card
+fontButton = ("Helvetica", 14)
+draw_button = tk.Button(root, text="Draw a Card", command=draw_card, width=10, height=1, font=fontButton, bg="blue", fg="white")
+draw_button.pack()
+
+# Create a label to display the coinflip result
+coinflip_label = tk.Label(root, text="", pady=10, font=font, bg="black", fg="white")
+coinflip_label.pack()
+
+# Create a button to perform a coinflip
+coinflip_button = tk.Button(root, text="Coinflip", command=coinflip, width=10, height=1, font=fontButton, bg="blue", fg="white")
+coinflip_button.pack()
+
+root.mainloop()
